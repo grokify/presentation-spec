@@ -1,0 +1,20 @@
+# Ideation files
+IDEATION_CHAT*.md
+
+# Build outputs
+/render
+/site/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test outputs
+*.test
+coverage.out
