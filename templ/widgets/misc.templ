@@ -1,0 +1,140 @@
+package widgets
+
+import (
+	"strconv"
+
+	"github.com/grokify/presentation-spec/spec"
+)
+
+// Diagram renders a diagram widget.
+// For Mermaid diagrams, include mermaid.js and initialize on page load.
+templ Diagram(w spec.Widget) {
+	<div class="diagram-container">
+		if w.Title != "" {
+			<h3 class="diagram-title">{ w.Title }</h3>
+		}
+		switch w.DiagramType {
+		case spec.DiagramTypeMermaid:
+			<div class="mermaid">
+				{ w.Source }
+			</div>
+		case spec.DiagramTypePlantUML:
+			<pre class="diagram-source plantuml">{ w.Source }</pre>
+		case spec.DiagramTypeGraphviz:
+			<pre class="diagram-source graphviz">{ w.Source }</pre>
+		case spec.DiagramTypeD2:
+			<pre class="diagram-source d2">{ w.Source }</pre>
+		default:
+			<pre class="diagram-source">{ w.Source }</pre>
+		}
+	</div>
+}
+
+// Callout renders a callout widget.
+templ Callout(w spec.Widget) {
+	<div class={ calloutClasses(w.CalloutType) }>
+		<div class="callout-icon">
+			@calloutIcon(w.CalloutType)
+		</div>
+		<div class="callout-content">
+			if w.Title != "" {
+				<div class="callout-title">{ w.Title }</div>
+			}
+			<div class="callout-body">
+				@templ.Raw(markdownToHTML(w.Content))
+			</div>
+		</div>
+	</div>
+}
+
+templ calloutIcon(calloutType spec.CalloutType) {
+	switch calloutType {
+	case spec.CalloutTypeInfo:
+		<span aria-label="Info">&#9432;</span>
+	case spec.CalloutTypeWarning:
+		<span aria-label="Warning">&#9888;</span>
+	case spec.CalloutTypeError:
+		<span aria-label="Error">&#10006;</span>
+	case spec.CalloutTypeSuccess:
+		<span aria-label="Success">&#10004;</span>
+	case spec.CalloutTypeTip:
+		<span aria-label="Tip">&#128161;</span>
+	default:
+		<span aria-label="Note">&#9432;</span>
+	}
+}
+
+// Quote renders a quote widget.
+templ Quote(w spec.Widget) {
+	<figure class="quote-container">
+		<blockquote class="quote-text">
+			{ w.Quote }
+		</blockquote>
+		if w.Attribution != "" {
+			<figcaption class="quote-attribution">
+				&mdash; { w.Attribution }
+			</figcaption>
+		}
+	</figure>
+}
+
+// Image renders an image widget.
+templ Image(w spec.Widget) {
+	<figure class="image-container">
+		<img
+			src={ w.Src }
+			alt={ w.Alt }
+			class="image"
+			loading="lazy"
+		/>
+		if w.Caption != "" {
+			<figcaption class="image-caption">{ w.Caption }</figcaption>
+		}
+	</figure>
+}
+
+// Code renders a code widget with syntax highlighting.
+templ Code(w spec.Widget) {
+	<div class="code-container">
+		if w.Title != "" {
+			<div class="code-header">
+				<span class="code-title">{ w.Title }</span>
+				if w.Language != "" {
+					<span class="code-language">{ w.Language }</span>
+				}
+			</div>
+		}
+		<pre class={ codeClasses(w.Language) } data-highlight-lines={ highlightLines(w.Highlight) }>
+			<code>{ w.Code }</code>
+		</pre>
+	</div>
+}
+
+func calloutClasses(calloutType spec.CalloutType) string {
+	base := "callout"
+	if calloutType != "" {
+		return base + " callout-" + string(calloutType)
+	}
+	return base + " callout-info"
+}
+
+func codeClasses(language string) string {
+	if language != "" {
+		return "code-block language-" + language
+	}
+	return "code-block"
+}
+
+func highlightLines(lines []int) string {
+	if len(lines) == 0 {
+		return ""
+	}
+	result := ""
+	for i, line := range lines {
+		if i > 0 {
+			result += ","
+		}
+		result += strconv.Itoa(line)
+	}
+	return result
+}

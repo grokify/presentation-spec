@@ -1,0 +1,126 @@
+package widgets
+
+import (
+	"strconv"
+
+	"github.com/grokify/presentation-spec/spec"
+)
+
+// MetricCard renders a metric card widget.
+templ MetricCard(w spec.Widget) {
+	<div class="metric-card">
+		if w.Title != "" {
+			<div class="metric-title">{ w.Title }</div>
+		}
+		<div class="metric-value-container">
+			<span class="metric-value">{ w.Value }</span>
+			if w.Unit != "" {
+				<span class="metric-unit">{ w.Unit }</span>
+			}
+		</div>
+		if w.Trend != "" || w.TrendValue != "" {
+			<div class={ trendClasses(w.Trend) }>
+				@trendIcon(w.Trend)
+				if w.TrendValue != "" {
+					<span class="trend-value">{ w.TrendValue }</span>
+				}
+			</div>
+		}
+		if w.Target != "" {
+			<div class="metric-target">
+				Target: { w.Target }
+			</div>
+		}
+		if len(w.Sparkline) > 0 {
+			<div class="metric-sparkline" data-values={ sparklineData(w.Sparkline) }>
+				@sparklineSVG(w.Sparkline)
+			</div>
+		}
+	</div>
+}
+
+templ trendIcon(trend spec.Trend) {
+	switch trend {
+	case spec.TrendUp:
+		<span class="trend-icon trend-up" aria-label="Trending up">&#9650;</span>
+	case spec.TrendDown:
+		<span class="trend-icon trend-down" aria-label="Trending down">&#9660;</span>
+	case spec.TrendFlat:
+		<span class="trend-icon trend-flat" aria-label="Flat">&#9644;</span>
+	}
+}
+
+templ sparklineSVG(values []float64) {
+	if len(values) > 1 {
+		<svg class="sparkline-svg" viewBox={ sparklineViewBox(values) } preserveAspectRatio="none">
+			<polyline
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				points={ sparklinePoints(values) }
+			/>
+		</svg>
+	}
+}
+
+func trendClasses(trend spec.Trend) string {
+	base := "metric-trend"
+	switch trend {
+	case spec.TrendUp:
+		return base + " trend-up"
+	case spec.TrendDown:
+		return base + " trend-down"
+	default:
+		return base + " trend-flat"
+	}
+}
+
+func sparklineData(values []float64) string {
+	// Convert to JSON-like string for potential JS usage
+	result := ""
+	for i, v := range values {
+		if i > 0 {
+			result += ","
+		}
+		result += strconv.FormatFloat(v, 'f', 2, 64)
+	}
+	return result
+}
+
+func sparklineViewBox(values []float64) string {
+	return "0 0 " + strconv.Itoa(len(values)*10) + " 50"
+}
+
+func sparklinePoints(values []float64) string {
+	if len(values) == 0 {
+		return ""
+	}
+
+	// Find min/max for scaling
+	min, max := values[0], values[0]
+	for _, v := range values {
+		if v < min {
+			min = v
+		}
+		if v > max {
+			max = v
+		}
+	}
+
+	// Avoid division by zero
+	valueRange := max - min
+	if valueRange == 0 {
+		valueRange = 1
+	}
+
+	points := ""
+	for i, v := range values {
+		if i > 0 {
+			points += " "
+		}
+		x := i * 10
+		y := 50 - int(((v-min)/valueRange)*45) - 2 // Scale to 45px height with 2px margin
+		points += strconv.Itoa(x) + "," + strconv.Itoa(y)
+	}
+	return points
+}

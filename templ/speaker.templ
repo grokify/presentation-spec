@@ -1,0 +1,91 @@
+package templ
+
+import (
+	"strconv"
+
+	"github.com/grokify/presentation-spec/spec"
+)
+
+// SpeakerView renders a presentation in speaker notes mode with two windows:
+// main presentation and speaker notes with timing.
+templ SpeakerView(pres spec.PresentationSpec) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Speaker Notes - { pres.Metadata.Title }</title>
+			<link rel="stylesheet" href="assets/style.css"/>
+			<link rel="stylesheet" href="assets/speaker.css"/>
+		</head>
+		<body class="speaker-view">
+			<div class="speaker-container">
+				<div class="speaker-header">
+					<h1>{ pres.Metadata.Title }</h1>
+					<div class="speaker-timer">
+						<span class="timer-elapsed" id="elapsed">00:00:00</span>
+						<button class="timer-btn" onclick="toggleTimer()" id="timer-toggle">Start</button>
+						<button class="timer-btn" onclick="resetTimer()">Reset</button>
+					</div>
+				</div>
+				<div class="speaker-main">
+					<div class="speaker-slides">
+						<div class="current-slide-container">
+							<h3 class="pane-title">Current Slide</h3>
+							<div class="current-slide" id="current-slide-preview">
+								for i, slide := range pres.Slides {
+									<div class={ "slide-preview", templ.KV("active", i == 0) } data-slide={ strconv.Itoa(i) }>
+										<div class="slide-preview-header">
+											<span class="slide-num">Slide { strconv.Itoa(i+1) } of { strconv.Itoa(len(pres.Slides)) }</span>
+											if slide.Title != "" {
+												<span class="slide-title">{ slide.Title }</span>
+											}
+										</div>
+										<iframe class="slide-frame" src={ "index.html#" + slide.ID }></iframe>
+									</div>
+								}
+							</div>
+						</div>
+						<div class="next-slide-container">
+							<h3 class="pane-title">Next Slide</h3>
+							<div class="next-slide" id="next-slide-preview">
+								for i, slide := range pres.Slides {
+									if i > 0 {
+										<div class={ "slide-preview", templ.KV("active", i == 1) } data-slide={ strconv.Itoa(i) }>
+											<iframe class="slide-frame" src={ "index.html#" + slide.ID }></iframe>
+										</div>
+									}
+								}
+								<div class="slide-preview end-slide" data-slide="end">
+									<div class="end-slide-content">End of Presentation</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="speaker-notes-pane">
+						<h3 class="pane-title">Speaker Notes</h3>
+						<div class="notes-content" id="notes-content">
+							for i, slide := range pres.Slides {
+								<div class={ "notes-item", templ.KV("active", i == 0) } data-slide={ strconv.Itoa(i) }>
+									if slide.SpeakerNotes != "" {
+										@templ.Raw(markdownToHTML(slide.SpeakerNotes))
+									} else {
+										<p class="no-notes">No speaker notes for this slide.</p>
+									}
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+				<div class="speaker-controls">
+					<button class="control-btn" onclick="navigateSpeaker(-1)">← Previous</button>
+					<span class="slide-counter">
+						<span id="current-num">1</span> / { strconv.Itoa(len(pres.Slides)) }
+					</span>
+					<button class="control-btn" onclick="navigateSpeaker(1)">Next →</button>
+				</div>
+			</div>
+			<script src="assets/speaker.js"></script>
+		</body>
+	</html>
+}

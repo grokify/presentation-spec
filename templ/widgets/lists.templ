@@ -1,0 +1,113 @@
+package widgets
+
+import "github.com/grokify/presentation-spec/spec"
+
+// RiskList renders a risk list widget.
+templ RiskList(w spec.Widget) {
+	<div class="risk-list">
+		if w.Title != "" {
+			<h3 class="list-title">{ w.Title }</h3>
+		}
+		<ul class="risk-items">
+			for _, item := range w.Items {
+				<li class={ riskItemClasses(item) }>
+					<div class="risk-header">
+						<span class={ severityBadgeClasses(item.Severity) }>
+							{ string(item.Severity) }
+						</span>
+						<span class="risk-text">{ item.Text }</span>
+					</div>
+					if item.Mitigation != "" {
+						<div class="risk-mitigation">
+							<strong>Mitigation:</strong> { item.Mitigation }
+						</div>
+					}
+					if item.Owner != "" {
+						<div class="risk-owner">
+							<strong>Owner:</strong> { item.Owner }
+						</div>
+					}
+				</li>
+			}
+		</ul>
+	</div>
+}
+
+// DecisionList renders a decision list widget.
+templ DecisionList(w spec.Widget) {
+	<div class="decision-list">
+		if w.Title != "" {
+			<h3 class="list-title">{ w.Title }</h3>
+		}
+		<ul class="decision-items">
+			for _, item := range w.Items {
+				<li class="decision-item">
+					<div class="decision-text">{ item.Text }</div>
+					if item.Description != "" {
+						<div class="decision-description">{ item.Description }</div>
+					}
+					<div class="decision-meta">
+						if item.Owner != "" {
+							<span class="decision-owner">
+								<strong>Owner:</strong> { item.Owner }
+							</span>
+						}
+						if item.Deadline != "" {
+							<span class="decision-deadline">
+								<strong>Due:</strong> { item.Deadline }
+							</span>
+						}
+					</div>
+				</li>
+			}
+		</ul>
+	</div>
+}
+
+// Checklist renders a checklist widget.
+templ Checklist(w spec.Widget) {
+	<div class="checklist">
+		if w.Title != "" {
+			<h3 class="list-title">{ w.Title }</h3>
+		}
+		<ul class="checklist-items">
+			for _, item := range w.Items {
+				<li class={ checklistItemClasses(item) }>
+					<span class="check-indicator">
+						if item.Checked {
+							&#10003;
+						} else {
+							&#9675;
+						}
+					</span>
+					<span class="check-text">{ item.Text }</span>
+					if item.Description != "" {
+						<span class="check-description">{ item.Description }</span>
+					}
+				</li>
+			}
+		</ul>
+	</div>
+}
+
+func riskItemClasses(item spec.ListItem) string {
+	classes := "risk-item"
+	if item.Severity != "" {
+		classes += " severity-" + string(item.Severity)
+	}
+	if item.Status != "" {
+		classes += " status-" + string(item.Status)
+	}
+	return classes
+}
+
+func severityBadgeClasses(severity spec.Severity) string {
+	return "severity-badge severity-" + string(severity)
+}
+
+func checklistItemClasses(item spec.ListItem) string {
+	if item.Checked {
+		return "checklist-item checked"
+	}
+	return "checklist-item unchecked"
+}

@@ -1,0 +1,78 @@
+package widgets
+
+import (
+	"fmt"
+	"strconv"
+
+	"github.com/grokify/presentation-spec/spec"
+)
+
+// Table renders a table widget.
+templ Table(w spec.Widget) {
+	<div class="table-container">
+		if w.Title != "" {
+			<h3 class="table-title">{ w.Title }</h3>
+		}
+		<table class="data-table">
+			<thead>
+				<tr>
+					for _, col := range w.Columns {
+						<th
+							class={ columnClasses(col) }
+							style={ columnStyle(col) }
+						>
+							{ col.Header }
+						</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				for _, row := range w.Rows {
+					<tr>
+						for _, col := range w.Columns {
+							<td class={ columnClasses(col) }>
+								{ cellValue(row, col.Key) }
+							</td>
+						}
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+
+func columnClasses(col spec.TableColumn) string {
+	classes := "table-cell"
+	if col.Align != "" {
+		classes += " align-" + string(col.Align)
+	}
+	return classes
+}
+
+func columnStyle(col spec.TableColumn) string {
+	if col.Width != "" {
+		return "width: " + col.Width
+	}
+	return ""
+}
+
+func cellValue(row map[string]any, key string) string {
+	if v, ok := row[key]; ok {
+		switch val := v.(type) {
+		case string:
+			return val
+		case float64:
+			return strconv.FormatFloat(val, 'f', -1, 64)
+		case int:
+			return strconv.Itoa(val)
+		case bool:
+			if val {
+				return "Yes"
+			}
+			return "No"
+		default:
+			return fmt.Sprintf("%v", v)
+		}
+	}
+	return ""
+}

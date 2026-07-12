@@ -1,0 +1,141 @@
+package templ
+
+import (
+	"strconv"
+
+	"github.com/grokify/presentation-spec/spec"
+)
+
+// Presentation renders a complete presentation as an HTML document.
+templ Presentation(pres spec.PresentationSpec) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ pres.Metadata.Title }</title>
+			if pres.Metadata.Description != "" {
+				<meta name="description" content={ pres.Metadata.Description }/>
+			}
+			if pres.Metadata.Author != "" {
+				<meta name="author" content={ pres.Metadata.Author }/>
+			}
+			<link rel="stylesheet" href="assets/style.css"/>
+			// Prism.js for syntax highlighting
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css"/>
+			@themeStyles(pres.Theme)
+		</head>
+		<body class={ presentationClasses(pres) }>
+			<div class="presentation">
+				for i, slide := range pres.Slides {
+					@Slide(slide, i+1, len(pres.Slides))
+				}
+			</div>
+			<nav class="slide-nav">
+				<button class="nav-prev" onclick="navigateSlide(-1)" aria-label="Previous slide">&#8592;</button>
+				<span class="slide-counter">
+					<span id="current-slide">1</span> / { itoa(len(pres.Slides)) }
+				</span>
+				<button class="nav-next" onclick="navigateSlide(1)" aria-label="Next slide">&#8594;</button>
+			</nav>
+			// Mermaid for diagrams
+		<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+		// Chart.js for rich charts
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+		// Prism.js for syntax highlighting
+		<script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+		<script src="assets/navigation.js"></script>
+		</body>
+	</html>
+}
+
+// themeStyles outputs CSS custom properties from theme configuration.
+templ themeStyles(theme *spec.Theme) {
+	if theme != nil {
+		@templ.Raw("<style>" + generateThemeCSS(theme) + "</style>")
+	}
+}
+
+func generateThemeCSS(theme *spec.Theme) string {
+	if theme == nil {
+		return ""
+	}
+
+	css := ":root {\n"
+
+	if theme.Colors != nil {
+		if theme.Colors.Primary != "" {
+			css += "  --color-primary: " + theme.Colors.Primary + ";\n"
+		}
+		if theme.Colors.Secondary != "" {
+			css += "  --color-secondary: " + theme.Colors.Secondary + ";\n"
+		}
+		if theme.Colors.Background != "" {
+			css += "  --color-background: " + theme.Colors.Background + ";\n"
+		}
+		if theme.Colors.Surface != "" {
+			css += "  --color-surface: " + theme.Colors.Surface + ";\n"
+		}
+		if theme.Colors.Text != "" {
+			css += "  --color-text: " + theme.Colors.Text + ";\n"
+		}
+		if theme.Colors.Success != "" {
+			css += "  --color-success: " + theme.Colors.Success + ";\n"
+		}
+		if theme.Colors.Warning != "" {
+			css += "  --color-warning: " + theme.Colors.Warning + ";\n"
+		}
+		if theme.Colors.Error != "" {
+			css += "  --color-error: " + theme.Colors.Error + ";\n"
+		}
+	}
+
+	if theme.Typography != nil {
+		if theme.Typography.FontFamily != "" {
+			css += "  --font-family: " + theme.Typography.FontFamily + ";\n"
+		}
+		if theme.Typography.HeadingFontFamily != "" {
+			css += "  --font-family-heading: " + theme.Typography.HeadingFontFamily + ";\n"
+		}
+		if theme.Typography.CodeFontFamily != "" {
+			css += "  --font-family-code: " + theme.Typography.CodeFontFamily + ";\n"
+		}
+	}
+
+	css += "}"
+	return css
+}
+
+func presentationClasses(pres spec.PresentationSpec) string {
+	classes := "presentation-container"
+	if pres.Theme != nil {
+		if pres.Theme.Name != "" {
+			classes += " theme-" + pres.Theme.Name
+		}
+		if pres.Theme.Density != "" {
+			classes += " density-" + string(pres.Theme.Density)
+		}
+		if pres.Theme.AspectRatio != "" {
+			classes += " aspect-" + aspectRatioClass(string(pres.Theme.AspectRatio))
+		}
+	}
+	return classes
+}
+
+func aspectRatioClass(ratio string) string {
+	switch ratio {
+	case "16:9":
+		return "16x9"
+	case "4:3":
+		return "4x3"
+	case "1:1":
+		return "1x1"
+	default:
+		return "16x9"
+	}
+}
+
+func itoa(n int) string {
+	return strconv.Itoa(n)
+}

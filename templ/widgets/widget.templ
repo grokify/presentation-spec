@@ -1,0 +1,45 @@
+package widgets
+
+import "github.com/grokify/presentation-spec/spec"
+
+// Widget renders a widget based on its type.
+templ Widget(w spec.Widget) {
+	<div class={ widgetClasses(w) } id={ w.ID }>
+		switch w.Type {
+		case spec.WidgetTypeMetricCard:
+			@MetricCard(w)
+		case spec.WidgetTypeContentBlock:
+			@ContentBlock(w)
+		case spec.WidgetTypeRiskList:
+			@RiskList(w)
+		case spec.WidgetTypeDecisionList:
+			@DecisionList(w)
+		case spec.WidgetTypeChecklist:
+			@Checklist(w)
+		case spec.WidgetTypeChart:
+			@Chart(w)
+		case spec.WidgetTypeTable:
+			@Table(w)
+		case spec.WidgetTypeDiagram:
+			@Diagram(w)
+		case spec.WidgetTypeCallout:
+			@Callout(w)
+		case spec.WidgetTypeQuote:
+			@Quote(w)
+		case spec.WidgetTypeImage:
+			@Image(w)
+		case spec.WidgetTypeCode:
+			@Code(w)
+		default:
+			<div class="widget-unknown">Unknown widget type: { string(w.Type) }</div>
+		}
+	</div>
+}
+
+func widgetClasses(w spec.Widget) string {
+	classes := "widget widget-" + string(w.Type)
+	if w.Status != "" {
+		classes += " status-" + string(w.Status)
+	}
+	return classes
+}

@@ -1,0 +1,33 @@
+package widgets
+
+import "github.com/grokify/presentation-spec/spec"
+
+// ContentBlock renders a content block widget.
+templ ContentBlock(w spec.Widget) {
+	<div class="content-block">
+		if w.Title != "" {
+			<h3 class="content-title">{ w.Title }</h3>
+		}
+		<div class={ contentClasses(w.Format) }>
+			if w.Format == spec.ContentFormatMarkdown || w.Format == "" {
+				@templ.Raw(markdownToHTML(w.Content))
+			} else if w.Format == spec.ContentFormatHTML {
+				@templ.Raw(w.Content)
+			} else {
+				<p>{ w.Content }</p>
+			}
+		</div>
+	</div>
+}
+
+func contentClasses(format spec.ContentFormat) string {
+	base := "content-body"
+	switch format {
+	case spec.ContentFormatMarkdown:
+		return base + " content-markdown"
+	case spec.ContentFormatHTML:
+		return base + " content-html"
+	default:
+		return base + " content-plain"
+	}
+}

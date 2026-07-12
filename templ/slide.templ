@@ -1,0 +1,118 @@
+package templ
+
+import (
+	"github.com/grokify/presentation-spec/spec"
+	"github.com/grokify/presentation-spec/templ/widgets"
+)
+
+// Slide renders a single slide.
+templ Slide(slide spec.SlideSpec, num int, total int) {
+	<section
+		class={ slideClasses(slide) }
+		id={ slide.ID }
+		data-slide-num={ itoa(num) }
+		aria-label={ "Slide " + itoa(num) + " of " + itoa(total) }
+	>
+		if slide.Type == spec.SlideTypeTitle {
+			@titleSlide(slide)
+		} else if slide.Type == spec.SlideTypeSection {
+			@sectionSlide(slide)
+		} else {
+			@contentSlide(slide)
+		}
+	</section>
+}
+
+templ titleSlide(slide spec.SlideSpec) {
+	<div class="slide-content title-slide-content">
+		<h1 class="slide-title">{ slide.Title }</h1>
+		if slide.KeyMessage != "" {
+			<p class="slide-subtitle">{ slide.KeyMessage }</p>
+		}
+		for _, widget := range slide.Widgets {
+			@widgets.Widget(widget)
+		}
+	</div>
+}
+
+templ sectionSlide(slide spec.SlideSpec) {
+	<div class="slide-content section-slide-content">
+		<h2 class="section-title">{ slide.Title }</h2>
+		if slide.KeyMessage != "" {
+			<p class="section-subtitle">{ slide.KeyMessage }</p>
+		}
+	</div>
+}
+
+templ contentSlide(slide spec.SlideSpec) {
+	<div class="slide-content">
+		if slide.Title != "" {
+			<header class="slide-header">
+				<h2 class="slide-title">{ slide.Title }</h2>
+				if slide.KeyMessage != "" {
+					<p class="slide-key-message">{ slide.KeyMessage }</p>
+				}
+			</header>
+		}
+		<div class={ layoutClasses(slide.Layout) }>
+			if slide.Layout != nil && len(slide.Layout.Regions) > 0 {
+				@layoutWithRegions(slide)
+			} else {
+				@simpleLayout(slide)
+			}
+		</div>
+	</div>
+}
+
+templ layoutWithRegions(slide spec.SlideSpec) {
+	for _, region := range slide.Layout.Regions {
+		<div class={ regionClasses(region) } id={ "region-" + region.ID }>
+			for _, widget := range slide.Widgets {
+				if widget.RegionID == region.ID {
+					@widgets.Widget(widget)
+				}
+			}
+		</div>
+	}
+	// Render widgets without a region assignment
+	for _, widget := range slide.Widgets {
+		if widget.RegionID == "" {
+			@widgets.Widget(widget)
+		}
+	}
+}
+
+templ simpleLayout(slide spec.SlideSpec) {
+	for _, widget := range slide.Widgets {
+		@widgets.Widget(widget)
+	}
+}
+
+func slideClasses(slide spec.SlideSpec) string {
+	classes := "slide slide-type-" + string(slide.Type)
+	if slide.Layout != nil && slide.Layout.Template != "" {
+		classes += " layout-" + string(slide.Layout.Template)
+	}
+	return classes
+}
+
+func layoutClasses(layout *spec.Layout) string {
+	if layout == nil {
+		return "slide-body layout-single"
+	}
+	return "slide-body layout-" + string(layout.Template)
+}
+
+func regionClasses(region spec.Region) string {
+	classes := "region"
+	if region.Role != "" {
+		classes += " region-" + string(region.Role)
+	}
+	if region.Align != "" {
+		classes += " align-" + string(region.Align)
+	}
+	if region.VerticalAlign != "" {
+		classes += " valign-" + string(region.VerticalAlign)
+	}
+	return classes
+}

@@ -1,0 +1,222 @@
+package widgets
+
+import (
+	"encoding/json"
+	"strconv"
+
+	"github.com/grokify/presentation-spec/spec"
+)
+
+// Chart renders a chart widget.
+// Note: For full chart support, include a charting library like Chart.js
+// and initialize charts via JavaScript using the data attributes.
+templ Chart(w spec.Widget) {
+	<div class="chart-container">
+		if w.Title != "" {
+			<h3 class="chart-title">{ w.Title }</h3>
+		}
+		<div
+			class={ chartClasses(w.ChartType) }
+			data-chart-type={ string(w.ChartType) }
+			data-chart-data={ chartDataJSON(w.Data) }
+			data-chart-options={ chartOptionsJSON(w.Options) }
+		>
+			// Render a simple fallback visualization
+			switch w.ChartType {
+			case spec.ChartTypeBar:
+				@barChartSVG(w)
+			case spec.ChartTypeLine, spec.ChartTypeArea:
+				@lineChartSVG(w)
+			case spec.ChartTypePie, spec.ChartTypeDonut:
+				@pieChartFallback(w)
+			default:
+				@chartFallback(w)
+			}
+		</div>
+	</div>
+}
+
+templ barChartSVG(w spec.Widget) {
+	if w.Data != nil && len(w.Data.Series) > 0 && len(w.Data.Series[0].Values) > 0 {
+		<svg class="chart-svg chart-bar" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+			// Find max value for scaling
+			for i, v := range w.Data.Series[0].Values {
+				<rect
+					class="bar"
+					x={ barX(i, len(w.Data.Series[0].Values)) }
+					y={ barY(v, maxValue(w.Data.Series[0].Values)) }
+					width={ barWidth(len(w.Data.Series[0].Values)) }
+					height={ barHeight(v, maxValue(w.Data.Series[0].Values)) }
+					fill="var(--color-primary, #3b82f6)"
+				/>
+				if w.Data.Labels != nil && i < len(w.Data.Labels) {
+					<text
+						class="bar-label"
+						x={ barLabelX(i, len(w.Data.Series[0].Values)) }
+						y="195"
+						text-anchor="middle"
+						font-size="10"
+					>
+						{ w.Data.Labels[i] }
+					</text>
+				}
+			}
+		</svg>
+	}
+}
+
+templ lineChartSVG(w spec.Widget) {
+	if w.Data != nil && len(w.Data.Series) > 0 && len(w.Data.Series[0].Values) > 0 {
+		<svg class="chart-svg chart-line" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+			<polyline
+				fill="none"
+				stroke="var(--color-primary, #3b82f6)"
+				stroke-width="2"
+				points={ lineChartPoints(w.Data.Series[0].Values) }
+			/>
+			// Data points
+			for i, v := range w.Data.Series[0].Values {
+				<circle
+					cx={ linePointX(i, len(w.Data.Series[0].Values)) }
+					cy={ linePointY(v, maxValue(w.Data.Series[0].Values)) }
+					r="4"
+					fill="var(--color-primary, #3b82f6)"
+				/>
+			}
+		</svg>
+	}
+}
+
+templ pieChartFallback(w spec.Widget) {
+	<div class="chart-fallback chart-pie-fallback">
+		if w.Data != nil && len(w.Data.Series) > 0 {
+			<ul class="pie-legend">
+				for i, v := range w.Data.Series[0].Values {
+					<li>
+						if w.Data.Labels != nil && i < len(w.Data.Labels) {
+							<span class="legend-label">{ w.Data.Labels[i] }:</span>
+						}
+						<span class="legend-value">{ formatFloat(v) }</span>
+					</li>
+				}
+			</ul>
+		}
+	</div>
+}
+
+templ chartFallback(w spec.Widget) {
+	<div class="chart-fallback">
+		<p class="chart-type-label">{ string(w.ChartType) } chart</p>
+		if w.Data != nil && len(w.Data.Series) > 0 {
+			<p class="chart-data-summary">
+				{ strconv.Itoa(len(w.Data.Series)) } series,
+				{ strconv.Itoa(len(w.Data.Series[0].Values)) } data points
+			</p>
+		}
+	</div>
+}
+
+func chartClasses(chartType spec.ChartType) string {
+	return "chart chart-" + string(chartType)
+}
+
+func chartDataJSON(data *spec.ChartData) string {
+	if data == nil {
+		return "{}"
+	}
+	// Simple JSON serialization for JS consumption
+	b, _ := json.Marshal(data)
+	return string(b)
+}
+
+func chartOptionsJSON(options *spec.ChartOptions) string {
+	if options == nil {
+		return "{}"
+	}
+	b, _ := json.Marshal(options)
+	return string(b)
+}
+
+func maxValue(values []float64) float64 {
+	if len(values) == 0 {
+		return 1
+	}
+	max := values[0]
+	for _, v := range values {
+		if v > max {
+			max = v
+		}
+	}
+	if max == 0 {
+		return 1
+	}
+	return max
+}
+
+func barX(index, total int) string {
+	width := 380 / total
+	x := 10 + index*width
+	return strconv.Itoa(x)
+}
+
+func barY(value, max float64) string {
+	height := int((value / max) * 160)
+	y := 180 - height
+	return strconv.Itoa(y)
+}
+
+func barWidth(total int) string {
+	width := (380 / total) - 4
+	if width < 10 {
+		width = 10
+	}
+	return strconv.Itoa(width)
+}
+
+func barHeight(value, max float64) string {
+	height := int((value / max) * 160)
+	return strconv.Itoa(height)
+}
+
+func barLabelX(index, total int) string {
+	width := 380 / total
+	x := 10 + index*width + width/2
+	return strconv.Itoa(x)
+}
+
+func lineChartPoints(values []float64) string {
+	if len(values) == 0 {
+		return ""
+	}
+	max := maxValue(values)
+	points := ""
+	for i, v := range values {
+		if i > 0 {
+			points += " "
+		}
+		x := 20 + i*(360/(len(values)-1))
+		if len(values) == 1 {
+			x = 200
+		}
+		y := 180 - int((v/max)*160)
+		points += strconv.Itoa(x) + "," + strconv.Itoa(y)
+	}
+	return points
+}
+
+func linePointX(index, total int) string {
+	if total == 1 {
+		return "200"
+	}
+	x := 20 + index*(360/(total-1))
+	return strconv.Itoa(x)
+}
+
+func linePointY(value, max float64) string {
+	y := 180 - int((value/max)*160)
+	return strconv.Itoa(y)
+}
+
+func formatFloat(v float64) string {
+	return strconv.FormatFloat(v, 'f', 1, 64)
+}
