@@ -29,11 +29,11 @@ A Go-first specification library for presentations. Define your presentation onc
 
 ## Features
 
-- **Go-first**: Go types are the source of truth
-- **JSON Schema**: Auto-generated schema from Go types for validation and editor support
-- **Format-agnostic**: Render to web, PDF, PPTX, and more
-- **Data-driven**: Connect widgets to external data sources
-- **Type-safe**: Strong typing prevents common errors
+- 🎯 **Go-first**: Go types are the source of truth
+- 📋 **JSON Schema**: Auto-generated schema from Go types for validation and editor support
+- 🔄 **Format-agnostic**: Render to web, PDF, PPTX, and more
+- 📊 **Data-driven**: Connect widgets to external data sources
+- 🛡️ **Type-safe**: Strong typing prevents common errors
 
 ## Installation
 
