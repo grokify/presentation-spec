@@ -1,0 +1,317 @@
+{
+  "version": "1.0.0",
+  "metadata": {
+    "title": "Product Launch Readiness Review",
+    "subtitle": "Q1 2025 Release",
+    "author": "Product Team",
+    "date": "2025-01-15",
+    "description": "Executive dashboard for product launch readiness assessment",
+    "tags": ["launch", "readiness", "dashboard", "executive"]
+  },
+  "theme": {
+    "name": "corporate",
+    "density": "normal",
+    "aspectRatio": "16:9",
+    "brand": {
+      "companyName": "Acme Corp",
+      "primaryColor": "#1a73e8",
+      "secondaryColor": "#34a853"
+    },
+    "colors": {
+      "primary": "#1a73e8",
+      "secondary": "#34a853",
+      "background": "#ffffff",
+      "surface": "#f8f9fa",
+      "success": "#34a853",
+      "warning": "#fbbc04",
+      "error": "#ea4335"
+    }
+  },
+  "narrative": {
+    "storyline": "Assess launch readiness across key dimensions and identify blockers",
+    "audience": "Executive leadership",
+    "objective": "Secure go/no-go decision for Q1 launch",
+    "duration": "30m",
+    "sections": [
+      {
+        "id": "overview",
+        "title": "Executive Summary",
+        "order": 1,
+        "keyPoints": ["Overall status", "Key metrics", "Critical blockers"]
+      },
+      {
+        "id": "engineering",
+        "title": "Engineering Readiness",
+        "order": 2,
+        "keyPoints": ["Feature completion", "Quality metrics", "Technical debt"]
+      },
+      {
+        "id": "go-to-market",
+        "title": "Go-to-Market",
+        "order": 3,
+        "keyPoints": ["Marketing readiness", "Sales enablement", "Partner status"]
+      },
+      {
+        "id": "risks",
+        "title": "Risks & Decisions",
+        "order": 4,
+        "keyPoints": ["Open risks", "Required decisions", "Mitigation plans"]
+      }
+    ]
+  },
+  "slides": [
+    {
+      "id": "title",
+      "type": "title",
+      "title": "Product Launch Readiness",
+      "keyMessage": "Q1 2025 Release Assessment",
+      "widgets": [
+        {
+          "type": "content_block",
+          "id": "subtitle",
+          "content": "Executive Review | January 15, 2025"
+        }
+      ]
+    },
+    {
+      "id": "executive-summary",
+      "sectionId": "overview",
+      "type": "dashboard",
+      "title": "Executive Summary",
+      "keyMessage": "Launch is on track with 2 critical items requiring attention",
+      "layout": {
+        "template": "kpi_row_content_grid",
+        "regions": [
+          {"id": "kpi-row", "role": "kpi", "row": 1, "columnSpan": 4},
+          {"id": "main-content", "role": "content", "row": 2, "columnSpan": 3},
+          {"id": "sidebar", "role": "sidebar", "row": 2, "column": 4}
+        ]
+      },
+      "widgets": [
+        {
+          "type": "metric_card",
+          "id": "overall-readiness",
+          "regionId": "kpi-row",
+          "title": "Overall Readiness",
+          "value": "87",
+          "unit": "%",
+          "status": "good",
+          "trend": "up",
+          "trendValue": "+5%",
+          "target": "85%"
+        },
+        {
+          "type": "metric_card",
+          "id": "features-complete",
+          "regionId": "kpi-row",
+          "title": "Features Complete",
+          "value": "24/26",
+          "status": "warning",
+          "trend": "up",
+          "trendValue": "+2"
+        },
+        {
+          "type": "metric_card",
+          "id": "critical-bugs",
+          "regionId": "kpi-row",
+          "title": "Critical Bugs",
+          "value": "2",
+          "status": "warning",
+          "trend": "down",
+          "trendValue": "-3"
+        },
+        {
+          "type": "metric_card",
+          "id": "days-to-launch",
+          "regionId": "kpi-row",
+          "title": "Days to Launch",
+          "value": "14",
+          "status": "neutral"
+        },
+        {
+          "type": "chart",
+          "id": "readiness-trend",
+          "regionId": "main-content",
+          "title": "Readiness Trend",
+          "chartType": "area",
+          "data": {
+            "labels": ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6"],
+            "series": [
+              {"name": "Readiness %", "values": [45, 58, 67, 75, 82, 87]}
+            ]
+          },
+          "options": {
+            "showGrid": true,
+            "yAxisLabel": "Readiness %"
+          }
+        },
+        {
+          "type": "checklist",
+          "id": "launch-checklist",
+          "regionId": "sidebar",
+          "title": "Launch Checklist",
+          "items": [
+            {"text": "Feature freeze", "checked": true},
+            {"text": "Security review", "checked": true},
+            {"text": "Performance testing", "checked": true},
+            {"text": "Documentation complete", "checked": false},
+            {"text": "Go-to-market approved", "checked": false}
+          ]
+        }
+      ],
+      "speakerNotes": "Start with the big picture. Overall readiness is at 87%, above our 85% threshold. Two critical items need attention: documentation and GTM approval."
+    },
+    {
+      "id": "engineering-status",
+      "sectionId": "engineering",
+      "type": "dashboard",
+      "title": "Engineering Readiness",
+      "keyMessage": "2 features remaining, quality metrics on target",
+      "layout": {
+        "template": "metric_dashboard"
+      },
+      "widgets": [
+        {
+          "type": "metric_card",
+          "id": "code-coverage",
+          "title": "Code Coverage",
+          "value": "94",
+          "unit": "%",
+          "status": "good",
+          "target": "90%"
+        },
+        {
+          "type": "metric_card",
+          "id": "p99-latency",
+          "title": "P99 Latency",
+          "value": "145",
+          "unit": "ms",
+          "status": "good",
+          "target": "<200ms"
+        },
+        {
+          "type": "metric_card",
+          "id": "error-rate",
+          "title": "Error Rate",
+          "value": "0.02",
+          "unit": "%",
+          "status": "good",
+          "target": "<0.1%"
+        },
+        {
+          "type": "table",
+          "id": "remaining-features",
+          "title": "Remaining Features",
+          "columns": [
+            {"key": "feature", "header": "Feature", "width": "40%"},
+            {"key": "owner", "header": "Owner", "width": "20%"},
+            {"key": "status", "header": "Status", "width": "20%"},
+            {"key": "eta", "header": "ETA", "width": "20%"}
+          ],
+          "rows": [
+            {"feature": "OAuth SSO Integration", "owner": "Alice", "status": "In Progress", "eta": "Jan 18"},
+            {"feature": "Bulk Export API", "owner": "Bob", "status": "In Review", "eta": "Jan 16"}
+          ]
+        }
+      ],
+      "quality": {
+        "dataFreshness": "Real-time",
+        "confidence": 0.95,
+        "sources": ["Jenkins", "Datadog", "Jira"],
+        "lastUpdated": "2025-01-15T10:30:00Z"
+      }
+    },
+    {
+      "id": "risk-assessment",
+      "sectionId": "risks",
+      "type": "content",
+      "title": "Risk Assessment",
+      "keyMessage": "2 high risks require immediate mitigation",
+      "layout": {
+        "template": "two_column"
+      },
+      "widgets": [
+        {
+          "type": "risk_list",
+          "id": "open-risks",
+          "title": "Open Risks",
+          "items": [
+            {
+              "text": "Third-party API rate limits may impact launch traffic",
+              "severity": "high",
+              "status": "warning",
+              "mitigation": "Implement request queuing and caching layer",
+              "owner": "Platform Team"
+            },
+            {
+              "text": "Documentation incomplete for new features",
+              "severity": "high",
+              "status": "warning",
+              "mitigation": "Dedicated doc sprint this week",
+              "owner": "Tech Writing"
+            },
+            {
+              "text": "Partner integration testing delayed",
+              "severity": "medium",
+              "status": "neutral",
+              "mitigation": "Parallel testing track enabled",
+              "owner": "Partnerships"
+            }
+          ]
+        },
+        {
+          "type": "decision_list",
+          "id": "pending-decisions",
+          "title": "Decisions Required",
+          "items": [
+            {
+              "text": "Approve phased rollout vs. big-bang launch",
+              "owner": "VP Product",
+              "deadline": "2025-01-17",
+              "description": "Phased rollout reduces risk but delays full availability"
+            },
+            {
+              "text": "Allocate additional support resources",
+              "owner": "VP Support",
+              "deadline": "2025-01-16",
+              "description": "Launch expected to increase ticket volume by 40%"
+            }
+          ]
+        }
+      ],
+      "speakerNotes": "Two high-severity risks need attention. The API rate limit risk has a mitigation in progress. Documentation is the more urgent item."
+    },
+    {
+      "id": "recommendation",
+      "sectionId": "risks",
+      "type": "summary",
+      "title": "Recommendation",
+      "keyMessage": "Conditional GO for Q1 launch",
+      "widgets": [
+        {
+          "type": "callout",
+          "id": "recommendation-callout",
+          "calloutType": "success",
+          "title": "Launch Recommendation",
+          "content": "**Conditional GO** for January 29, 2025 launch, contingent on:\n\n1. Documentation completion by January 22\n2. API rate limit mitigation deployed by January 25\n3. Phased rollout decision by January 17"
+        },
+        {
+          "type": "content_block",
+          "id": "next-steps",
+          "title": "Next Steps",
+          "format": "markdown",
+          "content": "- **Jan 16**: Support resource decision\n- **Jan 17**: Rollout strategy decision\n- **Jan 22**: Documentation deadline\n- **Jan 25**: Final go/no-go review\n- **Jan 29**: Launch day"
+        }
+      ]
+    }
+  ],
+  "exports": {
+    "outputDir": "./output",
+    "filename": "launch-readiness",
+    "targets": [
+      {"format": "web", "enabled": true},
+      {"format": "pdf", "enabled": true, "options": {"includeSpeakerNotes": true}},
+      {"format": "pptx", "enabled": true}
+    ]
+  }
+}

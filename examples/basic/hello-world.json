@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "metadata": {
+    "title": "Hello World",
+    "author": "Example Author",
+    "date": "2025-01-15",
+    "description": "A minimal presentation example"
+  },
+  "theme": {
+    "name": "minimal",
+    "aspectRatio": "16:9"
+  },
+  "slides": [
+    {
+      "id": "title-slide",
+      "type": "title",
+      "title": "Hello World",
+      "widgets": [
+        {
+          "type": "content_block",
+          "id": "subtitle",
+          "content": "A simple presentation using PresentationSpec"
+        }
+      ]
+    },
+    {
+      "id": "content-slide",
+      "type": "content",
+      "title": "Key Points",
+      "keyMessage": "PresentationSpec enables format-agnostic presentations",
+      "widgets": [
+        {
+          "type": "content_block",
+          "id": "main-content",
+          "format": "markdown",
+          "content": "## Benefits\n\n- **Format-agnostic**: Define once, render anywhere\n- **Data-driven**: Connect to live data sources\n- **Type-safe**: Go types ensure correctness"
+        }
+      ],
+      "speakerNotes": "Emphasize the separation of content from presentation format."
+    },
+    {
+      "id": "conclusion-slide",
+      "type": "summary",
+      "title": "Thank You",
+      "widgets": [
+        {
+          "type": "content_block",
+          "id": "closing",
+          "content": "Questions?"
+        }
+      ]
+    }
+  ]
+}

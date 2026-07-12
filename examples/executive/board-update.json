@@ -1,0 +1,315 @@
+{
+  "version": "1.0.0",
+  "metadata": {
+    "title": "Q4 2024 Board Update",
+    "subtitle": "Business Performance Review",
+    "author": "CEO Office",
+    "date": "2025-01-10",
+    "description": "Quarterly board of directors update on business performance",
+    "tags": ["board", "executive", "quarterly", "financials"]
+  },
+  "theme": {
+    "name": "executive",
+    "density": "spacious",
+    "aspectRatio": "16:9",
+    "brand": {
+      "companyName": "Acme Corp",
+      "logo": "assets/logo.svg",
+      "logoPosition": "top-right",
+      "primaryColor": "#0f172a",
+      "secondaryColor": "#3b82f6"
+    },
+    "typography": {
+      "fontFamily": "Inter, sans-serif",
+      "headingFontFamily": "Inter, sans-serif"
+    }
+  },
+  "narrative": {
+    "storyline": "Q4 exceeded expectations with record revenue and strong operational execution",
+    "audience": "Board of Directors",
+    "objective": "Inform board of Q4 performance and 2025 outlook",
+    "duration": "45m",
+    "sections": [
+      {
+        "id": "financial",
+        "title": "Financial Performance",
+        "order": 1
+      },
+      {
+        "id": "operational",
+        "title": "Operational Highlights",
+        "order": 2
+      },
+      {
+        "id": "strategic",
+        "title": "Strategic Initiatives",
+        "order": 3
+      },
+      {
+        "id": "outlook",
+        "title": "2025 Outlook",
+        "order": 4
+      }
+    ]
+  },
+  "slides": [
+    {
+      "id": "title",
+      "type": "title",
+      "title": "Q4 2024 Board Update",
+      "widgets": [
+        {
+          "type": "content_block",
+          "id": "meeting-info",
+          "content": "Board of Directors Meeting | January 10, 2025"
+        }
+      ]
+    },
+    {
+      "id": "executive-summary",
+      "type": "content",
+      "title": "Executive Summary",
+      "keyMessage": "Record Q4 performance across all key metrics",
+      "widgets": [
+        {
+          "type": "quote",
+          "id": "summary-quote",
+          "quote": "Q4 2024 marks our strongest quarter to date, with 28% YoY revenue growth and successful expansion into two new markets.",
+          "attribution": "Jane Smith, CEO"
+        },
+        {
+          "type": "content_block",
+          "id": "highlights",
+          "format": "markdown",
+          "content": "### Key Highlights\n\n- **Revenue**: $45.2M (28% YoY growth)\n- **ARR**: $180M milestone achieved\n- **Customers**: 2,500+ enterprise accounts\n- **Expansion**: Launched in UK and Germany"
+        }
+      ]
+    },
+    {
+      "id": "financial-performance",
+      "sectionId": "financial",
+      "type": "dashboard",
+      "title": "Financial Performance",
+      "keyMessage": "All financial metrics exceeded targets",
+      "layout": {
+        "template": "kpi_row_content_grid"
+      },
+      "widgets": [
+        {
+          "type": "metric_card",
+          "id": "revenue",
+          "title": "Q4 Revenue",
+          "value": "$45.2M",
+          "status": "good",
+          "trend": "up",
+          "trendValue": "+28% YoY",
+          "target": "$42M"
+        },
+        {
+          "type": "metric_card",
+          "id": "arr",
+          "title": "ARR",
+          "value": "$180M",
+          "status": "good",
+          "trend": "up",
+          "trendValue": "+35% YoY"
+        },
+        {
+          "type": "metric_card",
+          "id": "gross-margin",
+          "title": "Gross Margin",
+          "value": "78%",
+          "status": "good",
+          "trend": "up",
+          "trendValue": "+2pp"
+        },
+        {
+          "type": "metric_card",
+          "id": "cac-payback",
+          "title": "CAC Payback",
+          "value": "14",
+          "unit": "months",
+          "status": "good",
+          "trend": "down",
+          "trendValue": "-2 mo"
+        },
+        {
+          "type": "chart",
+          "id": "revenue-trend",
+          "title": "Quarterly Revenue Trend",
+          "chartType": "bar",
+          "data": {
+            "labels": ["Q1 '24", "Q2 '24", "Q3 '24", "Q4 '24"],
+            "series": [
+              {"name": "Revenue", "values": [32.5, 36.8, 40.2, 45.2], "color": "#3b82f6"}
+            ]
+          },
+          "options": {
+            "showLabels": true,
+            "yAxisLabel": "Revenue ($M)"
+          }
+        },
+        {
+          "type": "chart",
+          "id": "revenue-mix",
+          "title": "Revenue Mix",
+          "chartType": "donut",
+          "data": {
+            "labels": ["Subscription", "Professional Services", "Marketplace"],
+            "series": [
+              {"name": "Mix", "values": [82, 12, 6]}
+            ]
+          },
+          "options": {
+            "showLegend": true
+          }
+        }
+      ],
+      "quality": {
+        "dataFreshness": "Q4 2024 Audited",
+        "confidence": 1.0,
+        "sources": ["Finance System", "NetSuite"],
+        "lastUpdated": "2025-01-08T00:00:00Z"
+      }
+    },
+    {
+      "id": "customer-metrics",
+      "sectionId": "operational",
+      "type": "dashboard",
+      "title": "Customer Metrics",
+      "keyMessage": "Strong retention with improving unit economics",
+      "widgets": [
+        {
+          "type": "metric_card",
+          "id": "nrr",
+          "title": "Net Revenue Retention",
+          "value": "118%",
+          "status": "good"
+        },
+        {
+          "type": "metric_card",
+          "id": "logo-churn",
+          "title": "Logo Churn",
+          "value": "2.1%",
+          "status": "good",
+          "trend": "down",
+          "trendValue": "-0.3pp"
+        },
+        {
+          "type": "metric_card",
+          "id": "nps",
+          "title": "NPS",
+          "value": "72",
+          "status": "good",
+          "trend": "up",
+          "trendValue": "+5"
+        },
+        {
+          "type": "metric_card",
+          "id": "enterprise-customers",
+          "title": "Enterprise Customers",
+          "value": "2,547",
+          "trend": "up",
+          "trendValue": "+312"
+        },
+        {
+          "type": "table",
+          "id": "top-wins",
+          "title": "Notable Q4 Wins",
+          "columns": [
+            {"key": "customer", "header": "Customer", "width": "35%"},
+            {"key": "acv", "header": "ACV", "width": "20%", "align": "right"},
+            {"key": "segment", "header": "Segment", "width": "25%"},
+            {"key": "use_case", "header": "Use Case", "width": "20%"}
+          ],
+          "rows": [
+            {"customer": "Global Bank Inc", "acv": "$2.4M", "segment": "Financial Services", "use_case": "Platform"},
+            {"customer": "TechCorp", "acv": "$1.8M", "segment": "Technology", "use_case": "Enterprise"},
+            {"customer": "HealthSys", "acv": "$1.5M", "segment": "Healthcare", "use_case": "Compliance"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "strategic-initiatives",
+      "sectionId": "strategic",
+      "type": "content",
+      "title": "Strategic Initiatives Update",
+      "keyMessage": "All strategic initiatives on track for 2025",
+      "widgets": [
+        {
+          "type": "checklist",
+          "id": "initiative-status",
+          "title": "2024 Strategic Priorities",
+          "items": [
+            {"text": "International expansion (UK, Germany)", "checked": true, "description": "Launched Q4 2024"},
+            {"text": "Enterprise platform v2.0", "checked": true, "description": "Shipped October 2024"},
+            {"text": "SOC 2 Type II certification", "checked": true, "description": "Completed November 2024"},
+            {"text": "Partner ecosystem launch", "checked": true, "description": "15 partners onboarded"},
+            {"text": "AI-powered features beta", "checked": false, "description": "Q1 2025 target"}
+          ]
+        },
+        {
+          "type": "content_block",
+          "id": "2025-priorities",
+          "title": "2025 Strategic Priorities",
+          "format": "markdown",
+          "content": "1. **Scale international** - Expand to France, Japan, Australia\n2. **AI platform** - Launch AI-powered automation suite\n3. **Marketplace growth** - 50 marketplace partners\n4. **Enterprise scale** - Support 10K+ seat deployments"
+        }
+      ]
+    },
+    {
+      "id": "2025-outlook",
+      "sectionId": "outlook",
+      "type": "content",
+      "title": "2025 Outlook",
+      "keyMessage": "Targeting $250M ARR with continued profitability path",
+      "widgets": [
+        {
+          "type": "metric_card",
+          "id": "arr-target",
+          "title": "2025 ARR Target",
+          "value": "$250M",
+          "status": "neutral",
+          "trendValue": "+39% YoY"
+        },
+        {
+          "type": "metric_card",
+          "id": "revenue-target",
+          "title": "2025 Revenue Target",
+          "value": "$200M",
+          "status": "neutral"
+        },
+        {
+          "type": "callout",
+          "id": "outlook-summary",
+          "calloutType": "info",
+          "title": "Key Assumptions",
+          "content": "- Continued strong NRR (115%+)\n- 3 new market launches\n- AI features drive upsell\n- No major market disruption"
+        }
+      ]
+    },
+    {
+      "id": "closing",
+      "type": "summary",
+      "title": "Discussion",
+      "widgets": [
+        {
+          "type": "content_block",
+          "id": "discussion-topics",
+          "title": "Topics for Board Discussion",
+          "format": "markdown",
+          "content": "1. **International investment** - Pace of geographic expansion\n2. **AI strategy** - Build vs. buy considerations\n3. **Capital allocation** - Profitability vs. growth tradeoffs\n4. **M&A pipeline** - Potential acquisition targets"
+        }
+      ]
+    }
+  ],
+  "exports": {
+    "outputDir": "./output",
+    "filename": "board-update-q4-2024",
+    "targets": [
+      {"format": "pdf", "enabled": true, "options": {"pageSize": "Letter", "landscape": true}},
+      {"format": "pptx", "enabled": true}
+    ]
+  }
+}
