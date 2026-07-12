@@ -1,0 +1,57 @@
+{
+  "irVersion": "1.0",
+  "project": "presentation-spec",
+  "repository": "https://github.com/grokify/presentation-spec",
+  "versioning": "semver",
+  "commitConvention": "conventional",
+  "maintainers": ["grokify"],
+  "releases": [
+    {
+      "version": "v0.1.0",
+      "date": "2025-01-15",
+      "commit": "ecac47e",
+      "highlights": [
+        { "description": "Go-first specification library for data-driven presentations with JSON Schema generated from Go types" },
+        { "description": "HTML and PDF rendering with 12 widget types for dashboards and executive presentations" },
+        { "description": "Live development server with hot reload for rapid iteration" }
+      ],
+      "added": [
+        { "description": "Core specification types: PresentationSpec, SlideSpec, Widget, Layout, Theme, Narrative, DataSource, ExportConfig", "commit": "d3d59f1" },
+        { "description": "12 widget types: metric_card, content_block, chart, table, risk_list, decision_list, checklist, diagram, callout, quote, image, code", "commit": "d3d59f1" },
+        { "description": "6 slide types: title, content, dashboard, section, summary, blank", "commit": "d3d59f1" },
+        { "description": "JSON Schema generation from Go types using invopop/jsonschema", "commit": "26b3696" },
+        { "description": "Embedded schema with //go:embed for runtime validation", "commit": "26b3696" },
+        { "description": "Schema validation using xeipuuv/gojsonschema", "commit": "26b3696" },
+        { "description": "HTML rendering using a-h/templ templates with responsive CSS", "commit": "9a60355" },
+        { "description": "PDF export via headless Chrome (chromedp)", "commit": "9a60355" },
+        { "description": "Development server with live reload", "commit": "9a60355" },
+        { "description": "Watch mode for auto-rebuild on file changes", "commit": "9a60355" },
+        { "description": "Speaker notes view with timer and keyboard navigation", "commit": "9a60355" },
+        { "description": "Data source loading: JSON, CSV, REST API with auth", "commit": "9a60355" },
+        { "description": "Chart.js integration for data visualization", "commit": "9a60355" },
+        { "description": "Mermaid.js integration for diagrams", "commit": "9a60355" },
+        { "description": "Prism.js syntax highlighting for code blocks", "commit": "9a60355" },
+        { "description": "`render` CLI with HTML/PDF output, validation, watch mode, and dev server", "commit": "77d8a90" },
+        { "description": "`genschema` CLI for JSON Schema regeneration", "commit": "77d8a90" },
+        { "description": "Example presentations: basic/hello-world.json, dashboard/launch-readiness.json, executive/board-update.json", "commit": "a4afbc5" }
+      ],
+      "documentation": [
+        { "description": "MkDocs documentation site with Material theme", "commit": "aae8ce1" },
+        { "description": "Getting started guides: installation, quickstart, CLI reference", "commit": "aae8ce1" },
+        { "description": "Specification docs: presentation, slides, widgets, layouts, themes, datasources", "commit": "aae8ce1" },
+        { "description": "User guides: dashboards, data sources, themes, speaker notes", "commit": "aae8ce1" },
+        { "description": "Roadmap with 27 planned features", "commit": "aae8ce1" },
+        { "description": "README with quick start and feature overview", "commit": "9f308c2" }
+      ],
+      "tests": [
+        { "description": "Unit tests for spec type marshaling/unmarshaling", "commit": "05efaa5" },
+        { "description": "Data loader tests for JSON, CSV, and API sources", "commit": "9a60355" },
+        { "description": "Renderer tests for HTML output", "commit": "9a60355" },
+        { "description": "Validation tests for schema compliance", "commit": "26b3696" }
+      ],
+      "build": [
+        { "description": "GitHub Actions shared workflows", "commit": "2451ce6" }
+      ]
+    }
+  ]
+}
